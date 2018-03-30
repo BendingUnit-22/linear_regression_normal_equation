@@ -35,7 +35,6 @@ def normal(d):
     params = mult(inverse_A_transpose_A, A_transpose_B)
     return params
 
-
 def transpose(a):
     row = len(a)
     if (row <= 0):
@@ -58,34 +57,38 @@ def transpose(a):
 def dot(line1, line2):
     if len(line1) != len(line2):
         print("Error zip args are difference size")
-        return []
+        sys.exit(0)
     return sum([line1[i] * line2[i] for i in range(len(line1))])
 
 # mutiply A * B
 def mult(A, B):
-    rowA = len(A)
-    rowB = len(B)
-    if (rowA <= 0) or (len(B) <= 0): # ensures no empty
+    lenA = len(A)
+    lenB = len(B)
+    if (lenA <= 0) or (len(B) <= 0): # ensures not empty
         return []
-    colA = len(A[0])
-    if colA != rowB:    # check matrix size for compatibility
+    if len(A[0]) != lenB:    # ensures matrix size for compatibility
         print "A and B cannot be multiplied because of their incompatible size"
-        return []
-    m = []
-    B = transpose(B)# transposing B will back loop below easier to perform
-    rowB = len(B)
-    for i in range(rowA):
+        sys.exit(0)
+    # m is result
+    productMatrix = []
+    B = transpose(B)# transposing B will make loop easier to perform below
+    lenB = len(B)
+    for i in range(lenA):
         l = []
         row = A[i] # for each row in A
-        for j in range(rowB):
+        for j in range(lenB):
             col = B[j]
             # dot every col in B
             product = dot(row, col)
             l.append(product)
-        m.append(l)
-    return m
+        productMatrix.append(l)
+    return productMatrix
 
-
+# read data from txt file 
+# ---- data.txt -----
+# 2 2
+# 3 3
+# 5 6
 def dataFromFile(filename):
     file = open(filename, 'r')
     data = file.readlines()
@@ -98,14 +101,6 @@ def dataFromFile(filename):
             p.append(float(s))
         points.append(p)
     return points
-
-# draw line linear line given b and x
-# b y-intercept
-# x slope
-def drawLine(plot, y, x, x_width):
-    # Create a list of values in the best fit line
-    abline_values = [slope * i + intercept for i in x]
-
 
 
 def plot(points, result):
@@ -125,6 +120,8 @@ def plot(points, result):
     linespace = [float(i) for i in range(0, int(max(Xs)) + margin)]
     abline_values = [slope * x + b for x in linespace]
     plt.plot(linespace, abline_values, '--')
+    s = 'Y-intercept={:0.2f}      slope={:0.2f}'.format(b, slope)
+    plt.title(s)
     plt.show()
 
 def main():
