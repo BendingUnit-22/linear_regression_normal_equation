@@ -110,8 +110,8 @@ def plot(points, result):
     Ys = pointsT[1]
     plt.plot(Xs, Ys, '*')
     margin = 1
-    plt.xlim(xmin=0, xmax=max(Xs)+margin) # define x range of the plot
-    plt.ylim(ymin=0, ymax=max(Ys)+margin) # define y range of the plot
+    plt.xlim(xmin=min(Xs) - margin, xmax=max(Xs)+margin) # define x range of the plot
+    plt.ylim(ymin=min(Ys) - margin, ymax=max(Ys)+margin) # define y range of the plot
     # plotting line
     b = result[0][0]
     slope = result[1][0]
